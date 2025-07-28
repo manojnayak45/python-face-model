@@ -127,7 +127,11 @@ def match_faces():
     end_time = time.time()
     print(f"⏱️ Match completed in {round(end_time - start_time, 2)} seconds")
 
-    return jsonify({"matches": matches})
+   return jsonify({
+    "matches": matches,
+    "message": "📩 Matching photos sent to your email!" if matches else "⚠️ No match found. Please try again."
+})
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
