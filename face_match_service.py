@@ -104,7 +104,6 @@ def match_faces():
 
             msg_alternative.attach(MIMEText(html, "html"))
 
-            # Attach image files using Content-ID
             for idx, m in enumerate(matches):
                 img_path = os.path.join(folder_path, m)
                 with open(img_path, "rb") as f:
@@ -112,7 +111,6 @@ def match_faces():
                     mime_img.add_header("Content-ID", f"<img{idx}>")
                     msg.attach(mime_img)
 
-            # Send email via Gmail SMTP
             with smtplib.SMTP("smtp.gmail.com", 587) as server:
                 server.starttls()
                 server.login(os.getenv("EMAIL_USER"), os.getenv("EMAIL_PASS"))
@@ -127,11 +125,11 @@ def match_faces():
     end_time = time.time()
     print(f"⏱️ Match completed in {round(end_time - start_time, 2)} seconds")
 
-   return jsonify({
-    "matches": matches,
-    "message": "📩 Matching photos sent to your email!" if matches else "⚠️ No match found. Please try again."
-})
-
+    # ✅ Return result to frontend
+    return jsonify({
+        "matches": matches,
+        "message": "📩 Matching photos sent to your email!" if matches else "⚠️ No match found. Please try again."
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
